@@ -2,9 +2,9 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 
-type Props = {}
 
-const Arrival = (props: Props) => {
+
+const Arrival = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const products = [

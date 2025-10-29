@@ -1,9 +1,8 @@
 import Image from 'next/image'
 import React from 'react'
 
-type Props = {}
 
-const Categories = (props: Props) => {
+const Categories = () => {
   return (
     <div className='px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[85px] mt-8 sm:mt-10 md:mt-12 lg:mt-14'>
        <h1 className='text-lg sm:text-xl md:text-2xl font-semibold text-center mb-6 sm:mb-7 md:mb-8'>Top Categories this Week</h1>

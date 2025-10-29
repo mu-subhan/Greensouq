@@ -101,24 +101,24 @@ export default function Dashboard() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Delete this song permanently?")) return;
+  // const handleDelete = async (id: string) => {
+  //   if (!confirm("Delete this song permanently?")) return;
 
-    try {
-      const res = await fetch(`/api/favorites/${id}`, {
-        method: "DELETE"
-      });
+  //   try {
+  //     const res = await fetch(`/api/favorites/${id}`, {
+  //       method: "DELETE"
+  //     });
 
-      if (res.ok) {
-        toast.success("Song deleted");
-        setSongs(songs.filter(s => s.id !== id));
-      } else {
-        toast.error("Failed to delete");
-      }
-    } catch (error) {
-      toast.error("Failed to delete");
-    }
-  };
+  //     if (res.ok) {
+  //       toast.success("Song deleted");
+  //       setSongs(songs.filter(s => s.id !== id));
+  //     } else {
+  //       toast.error("Failed to delete");
+  //     }
+  //   } catch (error) {
+  //     toast.error("Failed to delete");
+  //   }
+  // };
 
   if (status === "loading") {
     return (

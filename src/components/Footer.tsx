@@ -3,9 +3,9 @@ import { FaEnvelope, FaFacebook, FaInstagram, FaLinkedin, FaPinterest, FaTiktok,
 import React, { useState } from 'react';
 import Image from 'next/image';
 
-type Props = {};
 
-const Footer = (props: Props) => {
+
+const Footer = () => {
   const [openSections, setOpenSections] = useState({
     findItFast: false,
     importantLinks: false,

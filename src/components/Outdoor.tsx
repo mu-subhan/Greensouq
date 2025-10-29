@@ -1,9 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 
-type Props = {}
-
-const Outdoor = (props: Props) => {
+const Outdoor = () => {
     return (
         <div className='px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[89px] mt-12 sm:mt-16 md:mt-20'>
             <h1 className='text-center mb-6 sm:mb-7 text-xl sm:text-2xl font-medium'>Top Selling Outdoor Plants</h1>

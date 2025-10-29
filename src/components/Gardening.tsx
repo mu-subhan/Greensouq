@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import { BiLeftArrow, BiRightArrow } from 'react-icons/bi'
+import {  BiRightArrow } from 'react-icons/bi'
 
 type Product = {
   id: number
@@ -221,7 +221,7 @@ const Gardening = () => {
       </div>
 
       {/* Desktop Carousel - 5 Products */}
-      <div className='hidden lg:block relative flex items-center justify-center'>
+      <div className='hidden lg:block relative  items-center justify-center'>
         {/* Left Arrow */}
         <button
           onClick={handlePrev}

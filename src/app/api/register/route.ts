@@ -60,11 +60,6 @@
 
 
 
-// ============================================
-// 1. MOVE THIS FILE TO: app/api/register/route.ts
-// (NOT inside the auth folder!)
-// ============================================
-
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
