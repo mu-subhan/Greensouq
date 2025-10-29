@@ -1,24 +1,62 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast"
 
-const Page = () => {
+const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value
     });
+    // Clear error when user starts typing
+    if (error) setError("");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt:", formData);
+    setLoading(true);
+    setError("");
+  
+    try {
+      console.log("🔄 Attempting login with:", formData.email);
+      
+      const result = await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      });
+  
+      console.log("📨 SignIn result:", result);
+  
+      if (result?.error) {
+        console.log("❌ SignIn error:", result.error);
+        toast.error("Invalid email or password");
+      } else if (result?.ok) {
+        console.log("✅ Login successful!");
+        toast.success("Login successful!");
+        router.push("/dashboard");
+        router.refresh(); // Important: refresh to update auth state
+      } else {
+        console.log("❓ Unexpected result:", result);
+        toast.error("Login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("💥 Login error:", error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -35,6 +73,12 @@ const Page = () => {
 
           {/* Form Section */}
           <form onSubmit={handleSubmit} className="p-8">
+            {/* Error Message */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
             {/* Email Input */}
             <div className="mb-6">
               <label
@@ -52,6 +96,7 @@ const Page = () => {
                   placeholder="Enter your email"
                   className="w-full border border-gray-300 rounded-lg p-4 pl-12 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50"
                   required
+                  disabled={loading}
                 />
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                   <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,6 +126,7 @@ const Page = () => {
                   placeholder="Enter your password"
                   className="w-full border border-gray-300 rounded-lg p-4 pl-12 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50"
                   required
+                  disabled={loading}
                 />
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                   <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,6 +142,7 @@ const Page = () => {
                 type="checkbox"
                 id="remember"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                disabled={loading}
               />
               <label htmlFor="remember" className="ml-2 text-sm text-gray-600">
                 Remember me
@@ -105,9 +152,10 @@ const Page = () => {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-800 transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-800 transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              Sign In
+              {loading ? "Signing In..." : "Sign In"}
             </button>
 
             {/* Divider */}
@@ -146,4 +194,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default LoginPage;
