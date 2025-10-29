@@ -55,7 +55,9 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Await the params Promise first
     const { id } = await params;
+    
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
@@ -87,4 +89,7 @@ export async function PATCH(
     );
   }
 }
+
+// Add this export for Next.js 15 compatibility
+export const dynamic = 'force-dynamic';
 
