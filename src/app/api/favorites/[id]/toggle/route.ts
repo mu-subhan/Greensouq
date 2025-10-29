@@ -52,12 +52,10 @@ import { prisma } from "@/lib/prisma";
 
 export async function PATCH(
   request: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  // Resolve the params Promise
-  const { id } = await context.params;
-
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
@@ -69,23 +67,24 @@ export async function PATCH(
     });
 
     if (!song || song.userId !== session.user.id) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json({ error: "Song not found" }, { status: 404 });
     }
 
-    const updated = await prisma.favoriteSong.update({
+    const updatedSong = await prisma.favoriteSong.update({
       where: { id },
       data: { isFavorite: !song.isFavorite },
     });
 
     return NextResponse.json({
-      song: updated,
-      message: updated.isFavorite
-        ? "Added to favorites"
-        : "Removed from favorites",
+      message: updatedSong.isFavorite ? "Added to favorites" : "Removed from favorites",
+      song: updatedSong
     });
   } catch (error) {
-    console.error("API Error:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    console.error("Toggle favorite error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
