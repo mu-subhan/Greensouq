@@ -1,34 +1,43 @@
 
-// id/route
-// import { NextResponse } from "next/server";
-// import { getServerSession } from "next-auth/next";
-// import { authOptions } from "@/lib/auth";
-// import { prisma } from "@/lib/prisma";
 
-// export async function DELETE(
+
+
+// import { NextResponse } from "next/server";
+// import { getServerSession } from "next-auth";
+// import { authOptions } from "@/lib/auth";
+// import {prisma} from "@/lib/prisma";
+
+// export async function PATCH(
 //   request: Request,
-//   { params }: { params: { id: string } }
+//   context: { params: { id: string } }
 // ) {
 //   try {
+//     const { params } = context;
 //     const session = await getServerSession(authOptions);
 
 //     if (!session?.user?.id) {
 //       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 //     }
 
-//     const favorite = await prisma.favoriteSong.findUnique({
-//       where: { id: params.id }
+//     const song = await prisma.favoriteSong.findUnique({
+//       where: { id: params.id },
 //     });
 
-//     if (!favorite || favorite.userId !== session.user.id) {
+//     if (!song || song.userId !== session.user.id) {
 //       return NextResponse.json({ error: "Not found" }, { status: 404 });
 //     }
 
-//     await prisma.favoriteSong.delete({
-//       where: { id: params.id }
+//     const updated = await prisma.favoriteSong.update({
+//       where: { id: params.id },
+//       data: { isFavorite: !song.isFavorite },
 //     });
 
-//     return NextResponse.json({ message: "Deleted" });
+//     return NextResponse.json({
+//       song: updated,
+//       message: updated.isFavorite
+//         ? "Added to favorites"
+//         : "Removed from favorites",
+//     });
 //   } catch (error) {
 //     console.error("API Error:", error);
 //     return NextResponse.json({ error: "Server error" }, { status: 500 });
@@ -36,15 +45,18 @@
 // }
 
 
-import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
+import { NextResponse, NextRequest } from "next/server";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
+  // Resolve the params Promise
+  const { id } = await context.params;
+
   try {
     const session = await getServerSession(authOptions);
 
@@ -53,25 +65,27 @@ export async function PATCH(
     }
 
     const song = await prisma.favoriteSong.findUnique({
-      where: { id: params.id }
+      where: { id },
     });
 
     if (!song || song.userId !== session.user.id) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    // Toggle isFavorite
     const updated = await prisma.favoriteSong.update({
-      where: { id: params.id },
-      data: { isFavorite: !song.isFavorite }
+      where: { id },
+      data: { isFavorite: !song.isFavorite },
     });
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       song: updated,
-      message: updated.isFavorite ? "Added to favorites" : "Removed from favorites"
+      message: updated.isFavorite
+        ? "Added to favorites"
+        : "Removed from favorites",
     });
   } catch (error) {
     console.error("API Error:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+

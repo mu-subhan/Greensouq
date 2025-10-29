@@ -53,24 +53,7 @@ export default function FavoritesPage() {
     }
   };
 
-  // const handleDelete = async (id: string) => {
-  //   if (!confirm("Delete this song permanently? This cannot be undone.")) return;
-
-  //   try {
-  //     const res = await fetch(`/api/favorites/${id}`, {
-  //       method: "DELETE"
-  //     });
-
-  //     if (res.ok) {
-  //       toast.success("Song deleted permanently");
-  //       setFavorites(favorites.filter(f => f.id !== id));
-  //     } else {
-  //       toast.error("Failed to delete song");
-  //     }
-  //   } catch (error) {
-  //     toast.error("Failed to delete song");
-  //   }
-  // };
+ 
 
   const toggleFavorite = async (id: string) => {
     try {

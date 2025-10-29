@@ -35,7 +35,7 @@ const SignupPage = () => {
     }
 
     try {
-      console.log("🔄 Starting registration for:", formData.email);
+      console.log(" Starting registration for:", formData.email);
 
       // 1. Register user - FIXED: Changed to /api/register
       const res = await fetch("/api/register", {
@@ -56,7 +56,7 @@ const SignupPage = () => {
         throw new Error(data.error || "Registration failed");
       }
 
-      console.log("✅ User registered:", data.user.email);
+      console.log(" User registered:", data.user.email);
       toast.success("Account created! Logging you in...");
 
       // 2. Auto-login after registration
@@ -68,7 +68,7 @@ const SignupPage = () => {
       });
 
       if (signInResult?.error) {
-        console.log("❌ Auto-login failed, redirecting to login");
+        console.log(" Auto-login failed, redirecting to login");
         toast.error("Please login with your new account");
         router.push("/login");
       } else if (signInResult?.ok) {
@@ -79,7 +79,7 @@ const SignupPage = () => {
       }
 
     } catch (err){
-      console.error("💥 Signup error:", err);
+      console.error(" Signup error:", err);
       toast.error( "Registration failed");
     } finally {
       setLoading(false);
