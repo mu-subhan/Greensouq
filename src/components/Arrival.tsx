@@ -3,7 +3,6 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 
 
-
 const Arrival = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -200,7 +199,7 @@ const Arrival = () => {
 
             {/* Desktop Grid - Hidden on mobile */}
             <div className='hidden lg:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5 md:gap-6'>
-                {products.map((product, index) => (
+                {products.map((product) => (
                     <div key={product.id} className='w-full min-h-[300px] sm:min-h-[350px] md:min-h-[419px] relative overflow-hidden rounded-lg flex flex-col shadow-md hover:shadow-lg p-3 sm:p-4 group transition-all duration-300'>
                         <div className='w-full overflow-hidden rounded-lg flex flex-col relative'>
                             <Image

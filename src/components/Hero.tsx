@@ -5,7 +5,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 
 const Hero = () => {
   // State to track if the button should move to the top
-  const [moveToTop, setMoveToTop] = useState(false);
+  const [moveToTop] = useState(false);
 
   // Handle the scroll-to-top button click
   const handleClick = () => {

@@ -1,9 +1,4 @@
 
-
-// ============================================
-// 2. UPDATED SIGNUP PAGE: app/(auth)/signup/page.tsx
-// ============================================
-
 "use client";
 import Link from "next/link";
 import { useState } from "react";
@@ -83,9 +78,9 @@ const SignupPage = () => {
         router.refresh();
       }
 
-    } catch (err: any) {
+    } catch (err){
       console.error("💥 Signup error:", err);
-      toast.error(err.message || "Registration failed");
+      toast.error( "Registration failed");
     } finally {
       setLoading(false);
     }

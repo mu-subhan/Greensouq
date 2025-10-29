@@ -85,7 +85,7 @@ export default function FavoritesPage() {
       } else {
         toast.error("Failed to update");
       }
-    } catch (error) {
+    } catch  {
       toast.error("Failed to update");
     }
   };

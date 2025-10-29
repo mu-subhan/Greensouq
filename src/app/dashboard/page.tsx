@@ -1,5 +1,3 @@
-
-
 "use client";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -44,8 +42,9 @@ export default function Dashboard() {
       if (res.ok) {
         setSongs(data.songs || []);
       }
-    } catch (error) {
+    } catch  {
       console.error("Failed to load songs");
+      toast.error("error while load songs ")
     } finally {
       setLoadingSongs(false);
     }
@@ -72,7 +71,7 @@ export default function Dashboard() {
       } else {
         toast.error(data.error || "Failed to add song");
       }
-    } catch (error) {
+    } catch{
       toast.error("Failed to add song");
     } finally {
       setSubmitting(false);
@@ -96,7 +95,7 @@ export default function Dashboard() {
       } else {
         toast.error("Failed to update");
       }
-    } catch (error) {
+    } catch{
       toast.error("Failed to update");
     }
   };
